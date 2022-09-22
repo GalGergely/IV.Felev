@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name = "ourstd" default = "jar" basedir = ".">
+
+    <target name = "prepare">
+        <delete dir = "build"/>
+        <mkdir dir = "build/classes"/>
+    </target>
+
+    <target name = "clean" depends = "prepare">
+        <mkdir dir = "dist"/>
+        <delete>
+            <fileset dir = "build/classes" includes = "*"/>
+        </delete>
+        <delete>
+            <fileset dir = "dist" includes = "*"/>
+        </delete>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes">
+            <classpath>
+                <fileset dir="lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/OurStd.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="ourstd.Main"/>
+            </manifest>
+            <zipgroupfileset dir="lib" includes="**/*.jar"/>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="build/jar/OurStd.jar" fork="true"/>
+    </target>
+
+    <target name="doc" depends="compile">
+        <tstamp>
+            <format property="timestamp" pattern="d.M.yyyy"
+                    locale="en"/>
+        </tstamp>
+        <mkdir dir="doc"/>
+        <javadoc sourcepath="src" destdir="doc"
+                 windowtitle="Our Std">
+            <header>Thesis Generator</header>
+            <footer>Javadocs compiled ${timestamp}></footer>
+            <fileset dir="src/" includes="**/*.java" />
+        </javadoc>
+    </target>
+
+    <target name="test" depends="compile">
+        <mkdir dir="report"/>
+        <junit printsummary="yes" haltonfailure="no">
+
+            <classpath location="lib/junit-4.12.jar" />
+            <classpath location="lib/hamcrest-core-1.3.jar" />
+
+            <classpath location="build/classes" />
+            <classpath location="build/test/classes" />
+
+            <formatter type="xml" />
+            <formatter type="plain" />
+
+            <batchtest fork="yes" todir="report">
+                <fileset dir="src/ourstd/Tests">
+                    <include name="**/*Test.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+</project>

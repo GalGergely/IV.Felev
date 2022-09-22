@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Egyetem/Programok/Operacios-Rendszerek/namedPipe/main.c
+stdio.h
+-
+unistd.h
+-
+stdlib.h
+-
+sys/stat.h
+-
+fcntl.h
+-
+errno.h
+-
+
